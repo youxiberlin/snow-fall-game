@@ -9,13 +9,19 @@ canvas.setAttribute("height", height);
 var snow = [];
 var startButton = document.getElementById("start-game");
 var stopButton = document.getElementById("stop-game");
-
+gaomeverImg = new Image();
+gaomeverImg.src = "images/gameover.png";
+heartImg = new Image();
+heartImg.src = "images/heart.png";
+skullImg = new Image();
+skullImg.src = "images/skull.png";
 
 function startGame(){
   myGameArea.start();
 }
 
 var myGameArea = {
+
   start: function(){
     this.interval = setInterval(updateGameArea, 1000/50);
     console.log("interval", this.interval);
@@ -28,16 +34,14 @@ var myGameArea = {
     clearInterval(this.interval);
     console.log("interval stop");
   },
-  points: 5,
+  points: 1,
   score: function(){
     ctx.font = "20px arial";
     ctx.fillStyle = "blue";
     ctx.fillText("Points: " + this.points, 500, 50);
   },
   gameover: function(){
-    ctx.font = "80px arial";
-    ctx.fillStyle = "red";
-    ctx.fillText("Game Over!", 80, 250);
+    ctx.drawImage(gaomeverImg, 50, 200, 496, 83);
   }
 }
 
@@ -45,7 +49,9 @@ function updateGameArea(){
   for(var i = 0; i < snow.length; i++){
     if(girl.checkCrash(snow[i])){
       console.log("crash");
+      ctx.drawImage(skullImg, girl.x, girl.y, 30, 30);
       myGameArea.points --;
+
       snow.splice(i,1);
       if(myGameArea.points === 0){
         myGameArea.stop();
@@ -92,7 +98,9 @@ function updateGameArea(){
     if(girl.getStar(star[i])){
       console.log("got star!");
       myGameArea.points +=3;
+      ctx.drawImage(heartImg, girl.x, girl.y, 30, 30);
       star.splice(i,1);
+
     }
   }
 
