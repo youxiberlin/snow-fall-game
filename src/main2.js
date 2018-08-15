@@ -24,16 +24,13 @@ var gameIntro = {
 
   start: function(){
     this.introInterval = setInterval(this.first, 1000);
-    console.log("interval", this.introInterval);
   },
 
   first: function(){
     gameIntro.counter ++;
-    console.log("introCounter: ", gameIntro.counter);
     ctx.font = "25px arial";
     ctx.fillStyle = "white";
     ctx.fillText("I lose power when snow hits me.. ", 100, 250);
-    // ctx.drawImage(girlImg, 300, 300, 90, 90);
     introGirl();
     if(gameIntro.counter >=3){
       gameIntro.second();
@@ -111,6 +108,12 @@ var myGameArea = {
 
   gameover: function(){
     ctx.drawImage(gameoverImg, 50, 200, 496, 83);
+  },
+
+  heartDraw: function(){
+    for(var i = 0; i < heart.length; i++){
+      heart[i].draw();
+    }
   }
 }
 
@@ -136,22 +139,65 @@ function updateGameArea(){
   
   myGameArea.frame ++;
   console.log("frame", myGameArea.frame);
-
+  var randomX = Math.floor(Math.random()* 601);
   // Random snow
-  if(myGameArea.frame % 90 === 0){
-    var randomX = Math.floor(Math.random()* 601);
-    snow.push(new Component(randomX, 0, 20, 20, "snow"));
+  if(myGameArea.frame < 1400){
+    if(myGameArea.frame % 90 === 0){
+      var randomX = Math.floor(Math.random()* 601);
+      snow.push(new Component(randomX, 0, 20, 20, "snow"));
+    } 
+  } else if (myGameArea.frame < 2100){
+    if(myGameArea.frame % 60 === 0){
+      var randomX = Math.floor(Math.random()* 601);
+      snow.push(new Component(randomX, 0, 20, 20, "snow"));
+    } 
+  } else if (myGameArea.frame < 2800){
+    if(myGameArea.frame % 30 === 0){
+      var randomX = Math.floor(Math.random()* 601);
+      snow.push(new Component(randomX, 0, 20, 20, "snow"));
+    } 
+   }else {
+    if(myGameArea.frame % 15 === 0){
+      var randomX = Math.floor(Math.random()* 601);
+      snow.push(new Component(randomX, 0, 20, 20, "snow"));
+    } 
   }
+
     
   // girl movement & draw
   girl.draw();
   girl.hitWall();
+  myGameArea.heartDraw();
 
   // snow fall movement & draw
-  for(var j = 0; j < snow.length; j++){
-    snow[j].draw();
-    snow[j].nextMove();
+  // for(var j = 0; j < snow.length; j++){
+  //   snow[j].draw();
+  //   snow[j].nextMove();
+  // }
+  
+  if(myGameArea.frame < 1400){
+    console.log("1400");
+    for(var j = 0; j < snow.length; j++){
+      snow[j].draw();
+      snow[j].nextMove();
+    }
+  } else if(myGameArea.frame < 2100){
+    console.log("1400 - 2100");
+    for(var j = 0; j < snow.length; j++){
+      snow[j].draw();
+      snow[j].speedY = 2.5;
+      snow[j].nextMove();
+    }
+  } else {
+    console.log("2100<");
+    for(var j = 0; j < snow.length; j++){
+      snow[j].draw();
+      snow[j].speedY = 3;
+      snow[j].nextMove();
+    }
   }
+
+
 
   // every 150 frames, it generates a star
   if(myGameArea.frame % 280 === 0){
@@ -169,6 +215,24 @@ function updateGameArea(){
       console.log("got star!");
       myGameArea.points ++;
       star.splice(i,1);
+      
+      // for(var i = 0; i < 3; i++){
+      //   heart.push(new Component(girl.x + i* 10, girl.y + i* 10, 20, 20, "heart"));
+      // }
+      var girlX = girl.x;
+      var girlY = girl.y;
+      heart.push(new Component(girlX, girlY, 20, 20, "heart"));
+      setTimeout(function() {
+        heart.splice(0,1);
+        heart.push(new Component(girlX-10, girlY-10, 20, 20, "heart"));
+        setTimeout(function() {
+          heart.splice(0,1);
+          heart.push(new Component(girlX-20, girlY-20, 20, 20, "heart"));
+          setTimeout(function() {
+            heart.splice(0,1);
+          }, 100)
+        }, 100)
+      }, 100)
     }
   }
 
@@ -188,8 +252,24 @@ function updateGameArea(){
       console.log("got riceball!");
       myGameArea.points += 3;
       riceball.splice(i,1);
+      var girlX = girl.x;
+      var girlY = girl.y;
+      heart.push(new Component(girlX, girlY, 40, 40, "heart"));
+      setTimeout(function() {
+        heart.splice(0,1);
+        heart.push(new Component(girlX-10, girlY-10, 40, 40, "heart"));
+        setTimeout(function() {
+          heart.splice(0,1);
+          heart.push(new Component(girlX-20, girlY-20, 40, 40, "heart"));
+          setTimeout(function() {
+            heart.splice(0,1);
+          }, 100)
+        }, 100)
+      }, 100)
     }
+
   }
+
 }
 
 startButton.onclick = function(){

@@ -14,11 +14,11 @@ function Player(x, y, width, height){
   }
 
   this.moveRight = function(){
-    this.x += 7;
+    this.x += 10;
   }
 
   this.moveLeft = function(){
-    this.x -= 7;
+    this.x -= 10;
   }
 
   this.top = function(){return this.y}

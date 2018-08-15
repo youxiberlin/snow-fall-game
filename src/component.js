@@ -2,6 +2,7 @@ var snow = [];
 var star = [];
 var score = [];
 var riceball = [];
+var heart = [];
 
 function Component(x, y, width, height, img){
   this.x = x;
@@ -29,6 +30,10 @@ function Component(x, y, width, height, img){
   this.bottom = function(){return this.y + this.height}
   this.left = function(){return this.x}
   this.right = function(){return this.x + this.width}
+}
+
+Component.prototype.generate = function(){
+  ctx.drawImage(this.img, 200, 500, 20, 20);
 }
 // 
 
