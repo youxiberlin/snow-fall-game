@@ -14,7 +14,10 @@ gameoverImg.src = "images/gameover.png";
 skullImg = new Image();
 skullImg.src = "images/skull.png";
 girlImg = new Image();
-girlImg.src = "images/girl.png";
+girlImg.src = "images/girl2.png";
+var introGirl = function(){
+  ctx.drawImage(girlImg, 300, 300, 90, 90);
+}
 
 var gameIntro = {
   counter: 0,
@@ -30,8 +33,8 @@ var gameIntro = {
     ctx.font = "25px arial";
     ctx.fillStyle = "white";
     ctx.fillText("I lose power when snow hits me.. ", 100, 250);
-    ctx.drawImage(girlImg, 300, 300, 72, 90);
-   
+    // ctx.drawImage(girlImg, 300, 300, 90, 90);
+    introGirl();
     if(gameIntro.counter >=3){
       gameIntro.second();
     }
@@ -41,7 +44,7 @@ var gameIntro = {
     console.log("second intro");
     myGameArea.clear();
     ctx.fillText("I gain power when I catch star ", 100, 250);
-    ctx.drawImage(girlImg, 300, 300, 72, 90);
+    introGirl();
     if(gameIntro.counter >=6){
       gameIntro.third();
     }
@@ -50,7 +53,7 @@ var gameIntro = {
   third: function(){
     myGameArea.clear();
     ctx.fillText("Let me live as long as possible!!", 100, 250);
-    ctx.drawImage(girlImg, 300, 300, 72, 90);
+    introGirl();
     if(gameIntro.counter >=9){
       gameIntro.fourth();
     }
@@ -60,7 +63,7 @@ var gameIntro = {
     myGameArea.clear();
     ctx.fillText("When you are ready,", 100, 200);
     ctx.fillText("press Start or Space key", 100, 250);
-    ctx.drawImage(girlImg, 300, 300, 72, 90);
+    introGirl();
     if(gameIntro.counter >=15){
       gameIntro.stop();
     }
@@ -101,7 +104,6 @@ var myGameArea = {
   scoreDraw: function(){
     for(var i = 0; i < this.points; i++){
       score[i].draw();
-      console.log("score draw");
     }     
   },
 
@@ -123,7 +125,7 @@ function updateGameArea(){
   for(var i = 0; i < snow.length; i++){
     if(girl.checkCrash(snow[i])){
       console.log("crash");
-      ctx.drawImage(skullImg, girl.x + 10, girl.y, 30, 30);
+      ctx.drawImage(skullImg, girl.x + 15, girl.y, 30, 30);
       myGameArea.points --;
 
       snow.splice(i,1);

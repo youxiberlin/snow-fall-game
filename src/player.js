@@ -6,7 +6,8 @@ function Player(x, y, width, height){
   this.speedX = 0;
   this.speedY = 0;
   this.img = new Image();
-  this.img.src = "images/girl.png";
+  // this.img.src = "images/girl.png";
+  this.img.src = "images/girl2.png";
 
   this.draw = function(){
       ctx.drawImage(this.img, this.x, this.y, this.width, this.height);
@@ -47,7 +48,7 @@ function Player(x, y, width, height){
   }
 }
 
-var girl = new Player(200, 540, 50, 50);
+var girl = new Player(200, 540, 60, 60);
 
 document.onkeydown = function(e) {
   switch (e.keyCode) {
