@@ -85,13 +85,6 @@ var myGameArea = {
     console.log("interval", this.interval);
   },
 
-  // previous score
-  // score: function(){
-  //   ctx.font = "20px arial";
-  //   ctx.fillStyle = "blue";
-  //   ctx.fillText("Points: " + this.points, 500, 50);
-  // },
-
   // making heart score //
   score: function(){
     while(score.length < myGameArea.points){
@@ -179,6 +172,24 @@ function updateGameArea(){
     }
   }
 
+  //every 10000 frames, it generates superpower Rice-ball
+  if(myGameArea.frame % 1200 === 0){
+    var randomX = Math.floor(Math.random()* 601);
+    riceball.push(new Component(randomX, 0, 30, 30, "rice-ball"));
+  }
+
+  for(var y = 0; y < riceball.length; y++){
+    riceball[y].fall();
+    riceball[y].draw();
+  }
+
+  for(var i = 0; i < riceball.length; i++){
+    if(girl.getStar(riceball[i])){
+      console.log("got riceball!");
+      myGameArea.points += 3;
+      riceball.splice(i,1);
+    }
+  }
 }
 
 startButton.onclick = function(){

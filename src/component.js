@@ -1,6 +1,7 @@
 var snow = [];
 var star = [];
 var score = [];
+var riceball = [];
 
 function Component(x, y, width, height, img){
   this.x = x;
@@ -18,6 +19,10 @@ function Component(x, y, width, height, img){
 
   this.nextMove = function(){
     this.y += this.speedY;
+  }
+
+  this.fall = function(){
+    this.y += 1.3 * this.speedY;
   }
 
   this.top = function(){return this.y}
