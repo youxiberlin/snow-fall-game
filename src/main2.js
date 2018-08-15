@@ -58,7 +58,8 @@ var gameIntro = {
 
   fourth: function(){
     myGameArea.clear();
-    ctx.fillText("When you are ready, press Start or Space key", 100, 250);
+    ctx.fillText("When you are ready,", 100, 200);
+    ctx.fillText("press Start or Space key", 100, 250);
     ctx.drawImage(girlImg, 300, 300, 72, 90);
     if(gameIntro.counter >=15){
       gameIntro.stop();
