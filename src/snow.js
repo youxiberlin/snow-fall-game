@@ -1,5 +1,5 @@
 var endAngle = Math.PI*2;
-
+var snow = [];
 function Snow(x, y, radius, startAngle){
   this.x = x;
   this.y = y;

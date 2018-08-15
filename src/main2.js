@@ -11,98 +11,106 @@ var startButton = document.getElementById("start-game");
 var stopButton = document.getElementById("stop-game");
 gameoverImg = new Image();
 gameoverImg.src = "images/gameover.png";
-heartImg = new Image();
-heartImg.src = "images/heart.png";
 skullImg = new Image();
 skullImg.src = "images/skull.png";
 girlImg = new Image();
 girlImg.src = "images/girl.png";
 
-// Next iterations
-// > change Star Constructor to Component Constructor, and creates hearts for score counts with the constructor
-// starts by three hearts, it changes as scores goes up and down
+var gameIntro = {
+  counter: 0,
 
-
-var myGameArea = {
-
-  introStart: function(){
-    this.introInterval = setInterval(myGameArea.intro, 1000);
+  start: function(){
+    this.introInterval = setInterval(this.first, 1000);
     console.log("interval", this.introInterval);
-    
-    // clearInterval(this.interval);
   },
 
-  introCounter: 0,
-
-  intro: function(){
-    myGameArea.introCounter ++;
+  first: function(){
+    gameIntro.counter ++;
+    console.log("introCounter: ", gameIntro.counter);
     ctx.font = "25px arial";
     ctx.fillStyle = "white";
     ctx.fillText("I lose power when snow hits me.. ", 100, 250);
-    console.log("introCounter: ", myGameArea.introCounter);
-    // girlImg.onload = function(){
-      ctx.drawImage(girlImg, 300, 300, 72, 90);
-    // }
-    if(myGameArea.introCounter >=3){
-      // myGameArea.introStop();
-      myGameArea.introSecond();
+    ctx.drawImage(girlImg, 300, 300, 72, 90);
+   
+    if(gameIntro.counter >=3){
+      gameIntro.second();
     }
   },
 
-  introSecond: function(){
+  second: function(){
     console.log("second intro");
     myGameArea.clear();
     ctx.fillText("I gain power when I catch star ", 100, 250);
     ctx.drawImage(girlImg, 300, 300, 72, 90);
-    if(myGameArea.introCounter >=6){
-      myGameArea.introThird();
+    if(gameIntro.counter >=6){
+      gameIntro.third();
     }
   },
 
-  introThird: function(){
-    console.log("third intro");
+  third: function(){
     myGameArea.clear();
     ctx.fillText("Let me live as long as possible!!", 100, 250);
     ctx.drawImage(girlImg, 300, 300, 72, 90);
-    if(myGameArea.introCounter >=9){
-      myGameArea.introFourth();
+    if(gameIntro.counter >=9){
+      gameIntro.fourth();
     }
   },
 
-  introFourth: function(){
-    console.log("fourth intro");
+  fourth: function(){
     myGameArea.clear();
     ctx.fillText("When you are ready, press Start or Space key", 100, 250);
     ctx.drawImage(girlImg, 300, 300, 72, 90);
+    if(gameIntro.counter >=15){
+      gameIntro.stop();
+    }
   },
 
-  introStop: function(){
+  stop: function(){
     console.log("intro stop");
     clearInterval(this.introInterval);
-  },
+  }
+}
+
+var myGameArea = {
+  frame: 0,
+  points: 3,
 
   start: function(){
-    myGameArea.introStop();
+    gameIntro.stop();
     this.interval = setInterval(updateGameArea, 1000/50);
     console.log("interval", this.interval);
   },
 
-  frame: 0,
+  // previous score
+  // score: function(){
+  //   ctx.font = "20px arial";
+  //   ctx.fillStyle = "blue";
+  //   ctx.fillText("Points: " + this.points, 500, 50);
+  // },
 
-  clear : function(){
+  // making heart score //
+  score: function(){
+    while(score.length < myGameArea.points){
+      for(var i = 0; i < myGameArea.points; i++){
+        score.push(new Component(560-(score.length * 30), 20, 25, 25, "heart"));
+      }     
+    }
+  },
+
+  scoreDraw: function(){
+    for(var i = 0; i < this.points; i++){
+      score[i].draw();
+      console.log("score draw");
+    }     
+  },
+
+  clear: function(){
     ctx.clearRect(0, 0, canvas.width, canvas.height);
   },
 
   stop: function(){
     clearInterval(this.interval);
     console.log("interval stop");
-  },
-
-  points: 3,
-  score: function(){
-    ctx.font = "20px arial";
-    ctx.fillStyle = "blue";
-    ctx.fillText("Points: " + this.points, 500, 50);
   },
 
   gameover: function(){
@@ -128,43 +136,43 @@ function updateGameArea(){
 
   myGameArea.clear();
   myGameArea.score();
+  myGameArea.scoreDraw();
+  
   myGameArea.frame ++;
   console.log("frame", myGameArea.frame);
 
   // Random snow
   if(myGameArea.frame % 50 === 0){
     var randomX = Math.floor(Math.random()* 601);
-    snow.push(new Snow(randomX, 0, 10, 0));
+    snow.push(new Component(randomX, 0, 20, 20, "snow"));
   }
-  
+    
   // girl movement & draw
-  // girl.newPos();
   girl.draw();
   girl.hitWall();
-  console.log("girl.x:", girl.x, "girl.speedX:",girl.speedX)
-  
+
   // snow fall movement & draw
   for(var j = 0; j < snow.length; j++){
-    snow[j].nextMove();
     snow[j].draw();
+    snow[j].nextMove();
   }
 
   // every 150 frames, it generates a star
   if(myGameArea.frame % 150 === 0){
     var randomX = Math.floor(Math.random()* 601);
-    star.push(new Star(randomX, 5, 40, 40));
+    star.push(new Component(randomX, 0, 40, 40, "star"));
   }
+
   for(var x = 0; x < star.length; x++){
     star[x].nextMove();
     star[x].draw();
   }
+
   for(var i = 0; i < star.length; i++){
     if(girl.getStar(star[i])){
       console.log("got star!");
       myGameArea.points ++;
-      ctx.drawImage(heartImg, girl.x, girl.y, 30, 30);
       star.splice(i,1);
-
     }
   }
 
@@ -184,4 +192,4 @@ stopButton.onclick = function(){
   myGameArea.stop();
 }
 
-myGameArea.introStart();
+gameIntro.start();
