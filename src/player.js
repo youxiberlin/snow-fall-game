@@ -14,11 +14,11 @@ function Player(x, y, width, height){
   }
 
   this.moveRight = function(){
-    this.x += 5;
+    this.x += 7;
   }
 
   this.moveLeft = function(){
-    this.x -= 5;
+    this.x -= 7;
   }
 
   this.top = function(){return this.y}
@@ -43,7 +43,7 @@ function Player(x, y, width, height){
       this.x = 0;
     }
     if(this.right() >=600){
-      this.x = 550;
+      this.x = 540;
     }
   }
 }

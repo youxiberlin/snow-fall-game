@@ -81,7 +81,7 @@ var myGameArea = {
 
   start: function(){
     gameIntro.stop();
-    this.interval = setInterval(updateGameArea, 1000/50);
+    this.interval = setInterval(updateGameArea, 1000/70);
     console.log("interval", this.interval);
   },
 
@@ -145,7 +145,7 @@ function updateGameArea(){
   console.log("frame", myGameArea.frame);
 
   // Random snow
-  if(myGameArea.frame % 50 === 0){
+  if(myGameArea.frame % 90 === 0){
     var randomX = Math.floor(Math.random()* 601);
     snow.push(new Component(randomX, 0, 20, 20, "snow"));
   }
@@ -161,11 +161,11 @@ function updateGameArea(){
   }
 
   // every 150 frames, it generates a star
-  if(myGameArea.frame % 150 === 0){
+  if(myGameArea.frame % 280 === 0){
     var randomX = Math.floor(Math.random()* 601);
     star.push(new Component(randomX, 0, 40, 40, "star"));
   }
-
+ 
   for(var x = 0; x < star.length; x++){
     star[x].nextMove();
     star[x].draw();
