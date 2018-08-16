@@ -22,8 +22,6 @@ function Player(x, y, width, height){
     this.x -= 10;
   }
 
-  
-
 
   this.top = function(){return this.y}
   this.left = function(){ return this.x}
@@ -63,10 +61,7 @@ document.onkeydown = function(e) {
     case 39:
       girl.moveRight();
       break;
-    case 38:
-    //  setInterval(girl.jump, 20);
-      // girl.jump();
-      break;
   }
 };
+
 

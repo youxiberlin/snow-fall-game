@@ -11,13 +11,14 @@ body{
 
 canvas {
   /* background: rgba(238, 238, 238, 0.6); */
-  background: rgba(197, 189, 240, 0.4);
+  /* background: rgba(197, 189, 240, 0.4); */
   /* background: rgba(115, 156, 191, 0.3); */
   padding-left: 0;
   padding-right: 0;
   margin-left: auto;
   margin-right: auto;
   display: block;
+  border: white 3px solid;
 }
 
 .game-title {

@@ -35,7 +35,7 @@ var gameIntro = {
   second: function(){
     console.log("second intro");
     myGameArea.clear();
-    ctx.fillText("I gain power when I catch star ", 100, 250);
+    ctx.fillText("I gain power when I catch a star ", 120, 250);
     girlIntro.draw();
     if(gameIntro.counter >=6){
       gameIntro.third();
@@ -44,7 +44,7 @@ var gameIntro = {
 
   third: function(){
     myGameArea.clear();
-    ctx.fillText("Let me live as long as possible!!", 100, 250);
+    ctx.fillText("I also want to share my fav food..", 100, 250);
     girlIntro.draw();
     if(gameIntro.counter >=9){
       gameIntro.fourth();
@@ -53,10 +53,19 @@ var gameIntro = {
 
   fourth: function(){
     myGameArea.clear();
-    ctx.fillText("When you are ready,", 100, 200);
-    ctx.fillText("press Start or Space key", 100, 250);
+    ctx.fillText("That is Riceball or Onigiri", 150, 250);
     girlIntro.draw();
-    if(gameIntro.counter >=15){
+    if(gameIntro.counter >=13){
+      gameIntro.fifth();
+    }
+  },
+
+  fifth: function(){
+    myGameArea.clear();
+    ctx.fillText("When you are ready,", 120, 200);
+    ctx.fillText("press Start or Space key", 120, 250);
+    girlIntro.draw();
+    if(gameIntro.counter >=18){
       gameIntro.stop();
     }
   },
@@ -70,6 +79,7 @@ var gameIntro = {
 var myGameArea = {
   frame: 0,
   points: 3,
+  time: 100,
 
   start: function(){
     gameIntro.stop();
@@ -92,6 +102,12 @@ var myGameArea = {
     }     
   },
 
+  timeDisplay: function(){
+    ctx.font = "18px arial";
+    ctx.fillStyle = "blue";
+    ctx.fillText("Time left: " + this.time, 470, 80);
+  },
+
   clear: function(){
     ctx.clearRect(0, 0, canvas.width, canvas.height);
   },
@@ -109,11 +125,34 @@ var myGameArea = {
     for(var i = 0; i < heart.length; i++){
       heart[i].draw();
     }
+  },
+}
+
+var gameEnd = {
+  winRice: function(){
+    for(var i = 0; i < 150; i++){
+      console.log("win rice created");
+      var randomX = Math.floor(Math.random()* 601);
+      winRiceball.push(new Component(randomX, -150 + i*10, 30, 30, "rice-ball"));
+    }
+  },
+
+  winRiceDraw: function(){
+    ctx.clearRect(0,0,600,600);
+    for(var x = 0; x < 100; x++){
+      console.log("rice draw");
+      winRiceball[x].y += 10;
+      winRiceball[x].draw();
+    }
+    ctx.font = "35px arial";
+    ctx.fillStyle = "red";
+    ctx.fillText("I won! Yaaaaay!!", 200, 250);
+    girlIntro.draw();
   }
 }
 
-function updateGameArea(){
-  
+
+function updateGameArea(){ 
   for(var i = 0; i < snow.length; i++){
     if(girl.checkCrash(snow[i])){
       console.log("crash");
@@ -137,6 +176,34 @@ function updateGameArea(){
   console.log("frame", myGameArea.frame);
   var randomX = Math.floor(Math.random()* 601);
 
+
+  // "You win" display
+  if(myGameArea.time > 0 && myGameArea.points >= 17){
+    // myGameArea.stop();
+    console.log("you won");
+    gameEnd.winRice();
+    gameEnd.winRiceDraw();
+    return;
+  }
+
+  if(myGameArea.frame % 70 === 0){
+    myGameArea.time --;
+    console.log(myGameArea.time);
+  }
+  myGameArea.timeDisplay();
+  if(myGameArea.time < 1){
+    myGameArea.stop();
+    myGameArea.gameover();
+    girl.draw();
+    ctx.drawImage(skullImg, girl.x + 15, girl.y, 30, 30);
+    return;
+  }
+
+  // girl movement & draw
+  girl.draw();
+  girl.hitWall();
+  myGameArea.heartDraw();
+
   // Random snow and more snow when the games goes on
   if(myGameArea.frame < 1400){
     if(myGameArea.frame % 90 === 0){
@@ -153,56 +220,44 @@ function updateGameArea(){
       var randomX = Math.floor(Math.random()* 601);
       snow.push(new Component(randomX, 0, 20, 20, "snow"));
     } 
-   }else {
-    if(myGameArea.frame % 15 === 0){
+   } else {
+    if(myGameArea.frame % 20 === 0){
       var randomX = Math.floor(Math.random()* 601);
       snow.push(new Component(randomX, 0, 20, 20, "snow"));
     } 
   }
 
-    
-  // girl movement & draw
-  girl.draw();
-  girl.hitWall();
-  myGameArea.heartDraw();
-  
-
   // snow speed change when the game goes on
   if(myGameArea.frame < 1400){
-    console.log("1400");
     for(var j = 0; j < snow.length; j++){
       snow[j].draw();
       snow[j].nextMove();
     }
   } else if(myGameArea.frame < 2100){
-    console.log("1400 - 2100");
     for(var j = 0; j < snow.length; j++){
       snow[j].draw();
       snow[j].speedY = 2.5;
       snow[j].nextMove();
     }
   } else {
-    console.log("2100<");
     for(var j = 0; j < snow.length; j++){
       snow[j].draw();
-      snow[j].speedY = 3;
+      snow[j].speedY = 2.7;
       snow[j].nextMove();
     }
   }
 
-
-
   // every 150 frames, it generates a star
-  if(myGameArea.frame % 280 === 0){
+  if(myGameArea.frame % 250 === 0){
     var randomX = Math.floor(Math.random()* 601);
     star.push(new Component(randomX, 0, 40, 40, "star"));
   }
- 
-  for(var x = 0; x < star.length; x++){
+   for(var x = 0; x < star.length; x++){
     star[x].nextMove();
     star[x].draw();
   }
 
+  // when the girl catch a start, generates hearts
   for(var i = 0; i < star.length; i++){
     if(girl.getStar(star[i])){
       console.log("got star!");
@@ -273,10 +328,11 @@ startButton.onclick = function(){
   myGameArea.start();
 }
 
-
-
 stopButton.onclick = function(){
   myGameArea.stop();
 }
 
 gameIntro.start();
+
+
+

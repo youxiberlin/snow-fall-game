@@ -2,6 +2,7 @@ var snow = [];
 var star = [];
 var score = [];
 var riceball = [];
+var winRiceball = [];
 var heart = [];
 var skull = new Component(100,100,30,30,"skull");
 
