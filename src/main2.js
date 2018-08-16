@@ -5,19 +5,13 @@ var width = "600px";
 var height = "600px";
 canvas.setAttribute("width", width);
 canvas.setAttribute("height", height);
-
-
 var startButton = document.getElementById("start-game");
 var stopButton = document.getElementById("stop-game");
 gameoverImg = new Image();
 gameoverImg.src = "images/gameover.png";
 skullImg = new Image();
 skullImg.src = "images/skull.png";
-girlImg = new Image();
-girlImg.src = "images/girl2.png";
-var introGirl = function(){
-  ctx.drawImage(girlImg, 300, 300, 90, 90);
-}
+
 
 var gameIntro = {
   counter: 0,
@@ -31,7 +25,8 @@ var gameIntro = {
     ctx.font = "25px arial";
     ctx.fillStyle = "white";
     ctx.fillText("I lose power when snow hits me.. ", 100, 250);
-    introGirl();
+    girlIntro.draw();
+
     if(gameIntro.counter >=3){
       gameIntro.second();
     }
@@ -41,7 +36,7 @@ var gameIntro = {
     console.log("second intro");
     myGameArea.clear();
     ctx.fillText("I gain power when I catch star ", 100, 250);
-    introGirl();
+    girlIntro.draw();
     if(gameIntro.counter >=6){
       gameIntro.third();
     }
@@ -50,7 +45,7 @@ var gameIntro = {
   third: function(){
     myGameArea.clear();
     ctx.fillText("Let me live as long as possible!!", 100, 250);
-    introGirl();
+    girlIntro.draw();
     if(gameIntro.counter >=9){
       gameIntro.fourth();
     }
@@ -60,7 +55,7 @@ var gameIntro = {
     myGameArea.clear();
     ctx.fillText("When you are ready,", 100, 200);
     ctx.fillText("press Start or Space key", 100, 250);
-    introGirl();
+    girlIntro.draw();
     if(gameIntro.counter >=15){
       gameIntro.stop();
     }
@@ -118,6 +113,7 @@ var myGameArea = {
 }
 
 function updateGameArea(){
+  
   for(var i = 0; i < snow.length; i++){
     if(girl.checkCrash(snow[i])){
       console.log("crash");
@@ -132,7 +128,7 @@ function updateGameArea(){
       }
     }
   }
-
+  
   myGameArea.clear();
   myGameArea.score();
   myGameArea.scoreDraw();
@@ -140,7 +136,8 @@ function updateGameArea(){
   myGameArea.frame ++;
   console.log("frame", myGameArea.frame);
   var randomX = Math.floor(Math.random()* 601);
-  // Random snow
+
+  // Random snow and more snow when the games goes on
   if(myGameArea.frame < 1400){
     if(myGameArea.frame % 90 === 0){
       var randomX = Math.floor(Math.random()* 601);
@@ -168,13 +165,9 @@ function updateGameArea(){
   girl.draw();
   girl.hitWall();
   myGameArea.heartDraw();
-
-  // snow fall movement & draw
-  // for(var j = 0; j < snow.length; j++){
-  //   snow[j].draw();
-  //   snow[j].nextMove();
-  // }
   
+
+  // snow speed change when the game goes on
   if(myGameArea.frame < 1400){
     console.log("1400");
     for(var j = 0; j < snow.length; j++){
@@ -215,24 +208,22 @@ function updateGameArea(){
       console.log("got star!");
       myGameArea.points ++;
       star.splice(i,1);
+    
+      var minY = girl.y - 2 * 10
+
+      heart.push(new Component(girl.x, girl.y, 20, 20, "heart"));
       
-      // for(var i = 0; i < 3; i++){
-      //   heart.push(new Component(girl.x + i* 10, girl.y + i* 10, 20, 20, "heart"));
-      // }
-      var girlX = girl.x;
-      var girlY = girl.y;
-      heart.push(new Component(girlX, girlY, 20, 20, "heart"));
-      setTimeout(function() {
-        heart.splice(0,1);
-        heart.push(new Component(girlX-10, girlY-10, 20, 20, "heart"));
+      for (var i = 0 ; i < 3; i++) {
         setTimeout(function() {
-          heart.splice(0,1);
-          heart.push(new Component(girlX-20, girlY-20, 20, 20, "heart"));
-          setTimeout(function() {
+          if (heart[0].y <= minY) {
             heart.splice(0,1);
-          }, 100)
-        }, 100)
-      }, 100)
+          }
+          else {
+            heart[0].x -= 10
+            heart[0].y -= 10
+          }
+          }, 100*(i+1))
+      }
     }
   }
 
@@ -272,15 +263,17 @@ function updateGameArea(){
 
 }
 
-startButton.onclick = function(){
-  myGameArea.start();
-}
-
 document.body.onkeyup = function(e){
   if(e.keyCode == 32){
     myGameArea.start();
   }
 }
+
+startButton.onclick = function(){
+  myGameArea.start();
+}
+
+
 
 stopButton.onclick = function(){
   myGameArea.stop();

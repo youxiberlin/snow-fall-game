@@ -4,7 +4,8 @@ function Player(x, y, width, height){
   this.width = width;
   this.height = height;
   this.speedX = 0;
-  this.speedY = 0;
+  this.speedY = 5;
+  this.g = 0.1;
   this.img = new Image();
   // this.img.src = "images/girl.png";
   this.img.src = "images/girl2.png";
@@ -20,6 +21,9 @@ function Player(x, y, width, height){
   this.moveLeft = function(){
     this.x -= 10;
   }
+
+  
+
 
   this.top = function(){return this.y}
   this.left = function(){ return this.x}
@@ -49,6 +53,7 @@ function Player(x, y, width, height){
 }
 
 var girl = new Player(200, 540, 60, 60);
+var girlIntro = new Player(300, 300, 96, 96);
 
 document.onkeydown = function(e) {
   switch (e.keyCode) {
@@ -57,6 +62,10 @@ document.onkeydown = function(e) {
       break;
     case 39:
       girl.moveRight();
+      break;
+    case 38:
+    //  setInterval(girl.jump, 20);
+      // girl.jump();
       break;
   }
 };

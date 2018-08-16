@@ -3,6 +3,7 @@ var star = [];
 var score = [];
 var riceball = [];
 var heart = [];
+var skull = new Component(100,100,30,30,"skull");
 
 function Component(x, y, width, height, img){
   this.x = x;
