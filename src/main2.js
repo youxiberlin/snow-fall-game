@@ -133,16 +133,19 @@ var gameEnd = {
     for(var i = 0; i < 150; i++){
       console.log("win rice created");
       var randomX = Math.floor(Math.random()* 601);
-      winRiceball.push(new Component(randomX, -150 + i*10, 30, 30, "rice-ball"));
+      winRiceball.push(new Component(randomX, -550 + i*10, 30, 30, "rice-ball"));
     }
   },
 
   winRiceDraw: function(){
     ctx.clearRect(0,0,600,600);
-    for(var x = 0; x < 100; x++){
+    for(var x = 0; x < 80; x++){
       console.log("rice draw");
       winRiceball[x].y += 10;
       winRiceball[x].draw();
+      if(winRiceball[x].y > 600){
+        winRiceball[x].y = -1000 + x * 10;
+      }
     }
     ctx.font = "35px arial";
     ctx.fillStyle = "red";
