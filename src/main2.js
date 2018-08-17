@@ -91,7 +91,7 @@ var myGameArea = {
   score: function(){
     while(score.length < myGameArea.points){
       for(var i = 0; i < myGameArea.points; i++){
-        score.push(new Component(560-(score.length * 30), 20, 25, 25, "heart"));
+        score.push(new Component(560-(score.length * 32), 20, 26, 26, "heart2"));
       }     
     }
   },
