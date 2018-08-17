@@ -260,7 +260,7 @@ function updateGameArea(){
     star[x].draw();
   }
 
-  // when the girl catch a start, generates hearts
+  // when the girl catches a star, generates hearts
   for(var i = 0; i < star.length; i++){
     if(girl.getStar(star[i])){
       console.log("got star!");
@@ -280,7 +280,7 @@ function updateGameArea(){
             heart[0].x -= 10
             heart[0].y -= 10
           }
-          }, 100*(i+1))
+          }, 150*(i+1))
       }
     }
   }
@@ -301,22 +301,21 @@ function updateGameArea(){
       console.log("got riceball!");
       myGameArea.points += 3;
       riceball.splice(i,1);
-      var girlX = girl.x;
-      var girlY = girl.y;
-      heart.push(new Component(girlX, girlY, 40, 40, "heart"));
-      setTimeout(function() {
-        heart.splice(0,1);
-        heart.push(new Component(girlX-10, girlY-10, 40, 40, "heart"));
-        setTimeout(function() {
-          heart.splice(0,1);
-          heart.push(new Component(girlX-20, girlY-20, 40, 40, "heart"));
-          setTimeout(function() {
-            heart.splice(0,1);
-          }, 100)
-        }, 100)
-      }, 100)
-    }
 
+      var minY = girl.y - 2 * 15;
+      heart.push(new Component(girl.x, girl.y, 35, 35, "heart"));
+
+      for(var i = 0; i < 3; i++){
+        setTimeout(function(){
+          if(heart[0].y <= minY){
+            heart.splice(0,1);
+          } else {
+            heart[0].x -= 15;
+            heart[0].y -= 15;
+          }
+        }, 150 * (i + 1))
+      }
+    }
   }
 
 }
