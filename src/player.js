@@ -7,7 +7,6 @@ function Player(x, y, width, height){
   this.speedY = 5;
   this.g = 0.1;
   this.img = new Image();
-  // this.img.src = "images/girl.png";
   this.img.src = "images/girl2.png";
 
   this.draw = function(){

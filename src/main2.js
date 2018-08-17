@@ -23,7 +23,7 @@ var gameIntro = {
   first: function(){
     gameIntro.counter ++;
     ctx.font = "25px arial";
-    ctx.fillStyle = "white";
+    ctx.fillStyle = "#444";
     ctx.fillText("I lose power when snow hits me.. ", 100, 250);
     girlIntro.draw();
 
@@ -37,6 +37,7 @@ var gameIntro = {
     myGameArea.clear();
     ctx.fillText("I gain power when I catch a star ", 120, 250);
     girlIntro.draw();
+    introStar.draw();
     if(gameIntro.counter >=6){
       gameIntro.third();
     }
@@ -53,8 +54,9 @@ var gameIntro = {
 
   fourth: function(){
     myGameArea.clear();
-    ctx.fillText("That is Riceball or Onigiri", 150, 250);
+    ctx.fillText("That's Riceball or Onigiri", 150, 250);
     girlIntro.draw();
+    introRice.draw();
     if(gameIntro.counter >=13){
       gameIntro.fifth();
     }

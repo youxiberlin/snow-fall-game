@@ -5,6 +5,9 @@ var riceball = [];
 var winRiceball = [];
 var heart = [];
 var skull = new Component(100,100,30,30,"skull");
+var introRice = new Component(250,280,40,40,"rice-ball");
+var introStar = new Component(250,280,40,40,"star");
+
 
 function Component(x, y, width, height, img){
   this.x = x;
